@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "ms-ceintl.vscode-language-pack-zh-hans",
+        "dbaeumer.vscode-eslint",
+        "ecmel.vscode-html-css",
+        "abusaidm.html-snippets",
+        "xabikos.javascriptsnippets",
+        "lonefy.vscode-js-css-html-formatter"
+    ]
+}

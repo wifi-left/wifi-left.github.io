@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>Minecraft Loottable Maker | Gamom</title>
+    <meta charset="utf-8" />
+    <meta name="Keywords" content="Minecraft Loottable Maker" />
+    <meta name="Description" content="Minecraft Loottable Maker" />
+    <meta name="author" content="Gamom" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <link type="text/css" rel="stylesheet" href="../st_ga.css" />
+
+    <style type="text/css">
+        div.banner {
+            height: 240px;
+            background-color: var(--base-15);
+        }
+        
+        div.main {
+            background-color: var(--base-13);
+        }
+        
+        .output {
+            display: block;
+            margin: auto;
+            background-color: #F5F5F5;
+            width: 800px;
+            height: 100%;
+            border-top: 1px solid #0A67A3;
+        }
+        
+        #gItemsNBT,
+        #gFunctions {
+            padding-top: 80px;
+            display: block;
+            width: 860px;
+            z-index: 1000;
+            position: fixed;
+            top: -80px;
+            left: 0px;
+            height: 0px;
+            transition: height 0.5s ease-in, width 0.5s ease-in;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 20px -12px rgba(0, 0, 0, 0.62), 0 3px 20px 0px rgba(0, 0, 0, 0.32), 0 8px 10px -5px rgba(0, 0, 0, 0.4);
+        }
+        
+        #gFunctions {
+            width: 0px;
+            height: 100vh;
+            left: unset;
+            right: 0;
+        }
+        
+        #gItemsNBT #enchAdd .pText,
+        #gItemsNBT #AMAdd .pText,
+        #gItemsNBT #CanDAdd .pText,
+        #gItemsNBT #CanPAdd .pText {
+            padding-left: 80px;
+        }
+        
+        #enchLvlMin,
+        #enchLvlMax {
+            width: 65px;
+        }
+        
+        #gItemsNBT #btn info {
+            color: rgb(250, 250, 250);
+        }
+        
+        #gItemsNBT h2 {
+            background: var(--bg)
+        }
+        
+        #gItemsNBT h3 {
+            font-size: 26px;
+            padding: 0px 0px 0px 40px;
+            font-weight: bold;
+        }
+        
+        #gItemsNBT input[type="checkbox"] {
+            padding-left: 0px;
+            margin-left: 0px;
+        }
+        
+        #gItemsNBT input,
+        #gItemsNBT textarea,
+        #gItemsNBT select {
+            border: 2px solid gray;
+            color: black;
+        }
+        
+        #INBTButton {
+            display: inline-block;
+            position: relative;
+            font-size: 18px;
+            margin-left: 5px;
+            background-color: rgba(232, 201, 12, 0.9);
+            padding: 0px 6px 0px 5px;
+            height: 26px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #gItemsNBT #GIFG {
+            display: block;
+            margin: 16px 0px 16px 0px;
+            width: 100%;
+            border-top: rgba(0, 0, 0, 0.6) solid 4px;
+        }
+        
+        #gItemsNBT .GIB,
+        #gFunctions .GIB {
+            white-space: nowrap;
+            display: inline-block;
+            border-radius: 8px;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: .8;
+            margin-left: 40px;
+            padding: 0.5em 1.8em;
+            color: #fff;
+            background-color: #39393B;
+            border: 1px solid #C9C9C9;
+            transition: padding 0.25s ease;
+            cursor: pointer;
+            background-clip: padding-box;
+        }
+        
+        #gFunctions h2 {
+            font-size: 260%;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.8em;
+            background-color: var(--bg);
+        }
+        
+        #gFunctions input[type="checkbox"] {
+            padding-left: 0px;
+            margin-left: 0px;
+        }
+        
+        #gFunctions input,
+        #gFunctions textarea,
+        #gFunctions select {
+            border: 3px solid rgba(0, 0, 0, 0.8);
+        }
+        
+        #gFunctions .tbox td {
+            padding: 4px;
+        }
+        
+        .toolSlide {
+            background-color: var(--bg-1);
+            padding: 40px;
+            min-height: 60vh;
+        }
+        
+        .toolSlide li {
+            background-size: cover;
+            background-repeat: none;
+            opacity: 0;
+            display: none;
+            transition: opacity ease-in 0.8s;
+        }
+        
+        .toolSlide li h2 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        
+        .toolSlide li p {
+            font-size: 18px;
+            line-height: 1.5;
+            padding-bottom: 24px;
+            word-break: break-all;
+        }
+        
+        .toolSlide li .btn {
+            margin-left: 12px;
+            color: #fff;
+        }
+        
+        .toolSlide li .gl-tab .btn {
+            margin-left: 0;
+        }
+        
+        .toolSlide li .nextbutton {
+            background-color: rgba(228, 55, 55, 0.72);
+        }
+        
+        .toolSlide li .backbutton {
+            background-color: rgba(12, 200, 12, 0.72);
+        }
+        
+        .pText {
+            padding-left: 40px;
+        }
+        
+        .input.sho {
+            width: 92px;
+        }
+        /* 设置最小宽度防止排面变化 */
+        
+        div.all {
+            min-width: 1024px;
+            resize: both;
+            overflow: auto;
+        }
+        
+        .sprite {
+            display: inline-block;
+            vertical-align: text-top;
+            height: 16px;
+            width: 16px;
+            background-repeat: no-repeat;
+            vertical-align: middle;
+        }
+        
+        .mlt-roll {
+            margin-bottom: 20px;
+        }
+        
+        .mlt-entry {
+            display: block;
+            padding: 20px 0px 20px 20px;
+            background-color: var(--bg);
+            margin-top: 20px;
+        }
+        
+        hr {
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        @media screen and (max-width:768px) {
+            .toolSlide {
+                padding: 20px;
+            }
+            .pText {
+                padding-left: 6px;
+            }
+        }
+        
+        #loading {
+            background-color: aquamarine;
+            /* color: azure; */
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+        
+        * {
+            transition: 0.5s;
+            overflow-y: none;
+            overflow-x: none;
+            user-select: none;
+        }
+        
+        .center-title {
+            /* color: white; */
+            font-family: "console";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+        }
+        
+        #topicon {
+            position: absolute;
+            left: 16px;
+            top: 6px;
+            height: 48px;
+            width: 48px;
+            background-image: url("../../index/img/icon.png");
+            background-size: 100%;
+        }
+        
+        #toptitle {
+            font-size: 32px;
+            font-weight: normal;
+            line-height: 60px;
+            left: 80px;
+            display: inline-block;
+            position: absolute;
+        }
+        
+        #topbar {
+            padding-left: 2em;
+            background-color: rgb(220, 252, 241);
+            width: calc(100% - 2em);
+            height: 60px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+        /* #centerlog {
+            width: 200px;
+            height: 200px;
+            background-image: url("img/icon.png");
+            background-size: 100%;
+            text-align: center;
+        } */
+        
+        #index {
+            padding: 2em 2em 2em 2em;
+            background-image: linear-gradient(135deg, rgb(220, 252, 241), aquamarine);
+            width: calc(100% - 4em);
+            height: calc(100% - 4em);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        #cltext {
+            color: #333;
+        }
+        
+        #cltext:hover {
+            color: rgb(104, 104, 104);
+        }
+        
+        #textarea {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            padding: 4em 4em 4em 4em;
+            width: calc(100% - 8em);
+            height: auto;
+        }
+        
+         ::-webkit-scrollbar {
+            width: 0;
+        }
+        
+        .button-o {
+            color: #333;
+            font-weight: bold;
+            font-family: "console";
+            font-size: 26px;
+            outline: none;
+            border: none;
+            border-bottom: 4px solid #333;
+            width: 180px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            line-height: 60px;
+        }
+        
+        .button-o:hover,
+        .button-o:active {
+            color: #b6b6b6;
+            border-bottom: 4px solid #b6b6b6;
+        }
+        
+        .windows {
+            background: rgba(10, 10, 10, 0.8);
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 100%;
+        }
+        
+        A.applink:hover {
+            border: 2px dotted #DCE6F4;
+            padding: 2px;
+            background-color: #ffff00;
+            color: green;
+            text-decoration: none
+        }
+        
+        A.applink {
+            border: 2px dotted #DCE6F4;
+            padding: 2px;
+            color: #2F5BFF;
+            background: transparent;
+            text-decoration: none
+        }
+        
+        A.info {
+            color: #2F5BFF;
+            background: transparent;
+            text-decoration: none
+        }
+        
+        A.info:hover {
+            color: green;
+            background: transparent;
+            text-decoration: underline
+        }
+        
+        .te {
+            position: absolute;
+            top: 80px;
+        }
+        
+        .code {
+            display: inline-block;
+            padding: 4px 4px 4px 4px;
+            background-color: #DCE6F4;
+            border-radius: 0;
+            border: 1px solid black;
+            user-select: text;
+        }
+        
+        span {
+            line-height: 30px;
+        }
+        
+        .gl-tab {
+            /* background: rgba(170, 255, 0, 0.05); */
+            display: inline-block;
+        }
+        
+        .father {
+            padding-left: 4em;
+            padding-right: 4em;
+            width: calc(100% - 8em);
+        }
+        
+        .mlt-entry {
+            /* background: lightgreen; */
+            padding-left: 4em;
+            padding-right: 4em;
+            width: calc(100% - 8em);
+            display: inline-block;
+        }
+        
+        textarea {
+            transition: 0s;
+            height: 200px;
+            width: 300px;
+        }
+        
+        .nsel {
+            width: 150px;
+            height: 40px;
+            font-size: 18px;
+        }
+        
+        .nsel:hover {
+            color: rgb(192, 192, 192);
+        }
+        
+        #kuang {
+            width: 100%;
+            height: 600px;
+            overflow-y: scroll;
+            display: inline-block;
+            border: 1px solid black;
+            left: 0px;
+        }
+        
+         ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+        }
+        
+         ::-webkit-scrollbar-trac:hover {
+            background: #333;
+        }
+        
+         ::-webkit-scrollbar-trac {
+            background: rgba(0, 0, 0, 0);
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+         ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        #rollAdd {
+            width: 100%;
+            height: 600px;
+            display: inline-block;
+            left: 0px;
+        }
+        
+        .danger {
+            width: 60px;
+            font-size: 16px;
+            height: 24px;
+        }
+        
+        .info {
+            background: rgba(179, 171, 255, 0.7);
+            cursor: pointer;
+            transition: 0.5s;
+            text-align: center;
+            height: 32px;
+            width: 150px;
+            line-height: 32px;
+            border-radius: 4px;
+        }
+        
+        .info:hover {
+            background: rgba(216, 210, 252, 0.7);
+            display: inline-block;
+        }
+        
+        #rebutton {
+            width: 60px;
+            font-size: 16px;
+            height: 24px;
+            cursor: pointer;
+            line-height: 24px;
+        }
+        
+        #rebutton {
+            text-align: center;
+            /*background: #0078D4;*/
+            background: #ca0f0f;
+            border: none;
+            font-size: 14px;
+            outline: none;
+            border-radius: 2px;
+            color: #FFFFFF;
+            fill: #FFFFFF;
+            cursor: pointer;
+            padding: 2px 11px;
+            font-weight: 400;
+            line-height: 20px;
+            font-family: inherit;
+            margin: 0;
+            margin-top: 4px;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-basis: 0%;
+            box-sizing: border-box;
+        }
+        
+        #rebutton:hover {
+            background: #ad0000;
+        }
+        
+        #rebutton:active {
+            background: #ad0000;
+        }
+        
+        p {
+            display: inline-block;
+        }
+        
+        .all {
+            width: calc(100%);
+        }
+        
+        .all1 {
+            width: 100%;
+        }
+        
+        .textarea {
+            width: calc(100% - 4em);
+        }
+    </style>
+</head>
+
+<body bgcolor="azure">
+
+
+    <!-- Copyright � 2005. Spidersoft Ltd -->
+
+
+    <div class="textarea te">
+        <ul class="all">
+            <li class="all1">
+                <h2 class='mb-4'>1 : 认识战利品表</h2>
+                <p>创建完毕后，您即可在游戏中通过 [命名空间]:[子文件夹名]/[LootTable名] 来调用该Loottable。<br/>例如：<br/><span class='code'>/setblock ~ ~ ~ chest 0 replace {LootTable:"demo:test"}</span><br/>而在生物中，则为<br/><span class='code'>/summon zombie ~ ~ ~ {DeathLootTable:"demo:test"}</span></p>
+
+
+            </li>
+
+            <li class="all1">
+                <div class='flex mb-4' style='align-items: center;'>
+                    <h2>2 : 配置您的战利品列表 </h2>
+                    <button class='button-blue nsel' onclick="newRoll();">＋ 添加新Roll</button>
+
+                </div>
+                <br/>
+                <div id="kuang">
+                    <div id="rollAdd" name="rollAdd"></div>
+                    <br/>
+                </div>
+
+                <br/>
+                <button class="nsel button-green" onclick="doSlide(1,1);getOutput();">生成</button>
+            </li>
+
+            <li class="all1">
+                <h2 class='mb-4'>生成结果：</h2>
+                <textarea class='input fluid' id="cOutput" style="height:320px;width:100%;" rows="12" cols="30" /></textarea>
+                <br/><br/>
+                <button class='nsel button-green' onclick='mitCache.clear();'>清除缓存</button>
+            </li>
+
+        </ul>
+    </div>
+
+
+    <!-- #all-container END -->
+
+    <div id="gItemsNBT" class="gl-tab" style="width:50%;">
+        <h2>物品标签生成器 (模块引用：Ganxiaozhe)</h2>
+        <table>
+            <tr>
+                <td><span class='pText'>物品名: </span></td>
+                <td><input class='input' type="text" id="gItemsName" name="gItemsName" maxlength="32" /></td>
+            </tr>
+            <tr>
+                <td><span class='pText'>简介: </span></td>
+                <td><textarea id="gItemsLore" class='input' rows="3" cols="30" /></textarea><span class='tip ml-2'>回车即换行，1行1Lore</span></td>
+            </tr>
+            <tr>
+                <td><span class='pText'>无法破坏: </span></td>
+                <td><input class='input' type="checkbox" id="unbreak" name="unbreak" value="false" /></td>
+            </tr>
+            <tr>
+                <td><span class='pText'>信息隐藏: </span></td>
+                <td><select id="gItemsHide" class='input'><option value="0">全部显示</option><option value="1">隐藏附魔</option><option value="2">隐藏自定义属性</option><option value="3">隐藏附魔和自定义属性</option><option value="4">隐藏{Unbreakable}</option><option value="8">隐藏{CanDestroy}</option><option value="16">隐藏{CanPlaceOn}</option><option value="32">隐藏大部分信息(药水信息，书作者，烟花效果等等)</option><option value="63">隐藏所有的信息，除了物品名和Lore文本</option></select></td>
+            </tr>
+        </table>
+        <span id="GIFG"></span>
+        <h3 style="display:inline-block;">附魔</h3>
+        <p class='btn info' style="display:inline-block;margin-left: 40px;" onclick="newEnch();">添加新附魔</p>
+        <table class="tbox" id="enchAdd" name="enchAdd"></table>
+        <span id="GIFG"></span>
+        <h3 style="display:inline-block;">属性</h3>
+        <p class='btn info' style="display:inline-block;margin-left: 40px;" onclick="newAM();">添加新属性</p>
+        <table class="tbox" id="AMAdd" name="AMAdd"></table>
+        <span id="GIFG"></span>
+        <h3 style="display:inline-block;">可破坏</h3>
+        <p class='btn info' style="display:inline-block;margin-left: 40px;" onclick="newCanD();">添加新方块</p>
+        <table class="tbox" id="CanDAdd" name="CanDAdd"></table>
+        <span id="GIFG"></span>
+        <h3 style="display:inline-block;">可放置</h3>
+        <p class='btn info' style="display:inline-block;margin-left: 40px;" onclick="newCanP();">添加新方块</p>
+        <table class="tbox" id="CanPAdd" name="CanPAdd"></table>
+        <span id="GIFG"></span>
+        <br /><br /><br />
+        <p class="GIB btn" onclick="INBTRsult();">生成</p>
+        <p class="GIB btn" onclick="INBTRsult('clearNBT');">清空</p>
+        <p class="GIB btn" onclick='document.getElementById("gItemsNBT").style.height = "0px";'>取消</p>
+        <br /><br /><br />
+    </div>
+
+    <div id="gFunctions">
+        <h2 class='py-3'>Function生成器 (模块引用：Ganxiaozhe)</h2>
+        <table class="tbox" style="line-height:1.5em;margin-top:20px;">
+            <tr>
+                <td><span class='pText'>数量: </span></td>
+                <td><input class='input' type="number" id="countMin" name="countMin" placeholder="最小数量" maxlength="7" /></td>
+                <td><input class='input' type="number" id="countMax" name="countMax" placeholder="最大数量" maxlength="7" /></td>
+            </tr>
+            <tr>
+                <td><span class='pText' title="物品（工具）的剩余耐久的比率.也就是剩余的耐久/最大耐久（1.0就是是没有损害，0.0就是没耐久了）">损耗: </span></td>
+                <td><input class='input' type="number" id="damageMin" name="damageMin" placeholder="最小损耗" maxlength="7" /></td>
+                <td><input class='input' type="number" id="damageMax" name="damageMax" placeholder="最大损耗" maxlength="7" /></td>
+            </tr>
+            <tr>
+                <td><span class='pText' title="物品（非工具）的附加值，如dye加上不同附加值获取不同染料">附加值: </span></td>
+                <td><input class='input' type="number" id="dataMin" name="dataMin" placeholder="最小附加值" maxlength="7" /></td>
+                <td><input class='input' type="number" id="dataMax" name="dataMax" placeholder="最大附加值" maxlength="7" /></td>
+            </tr>
+            <tr>
+                <td><span class='pText' title="决定了每等级抢夺附魔对该物品数量的影响。如果未使用，则抢夺附魔无效果">抢夺影响: </span></td>
+                <td><input class='input' type="number" id="LElimit" name="LElimit" placeholder="最大掉落数" maxlength="7" /></td>
+                <td><input class='input' type="number" id="LEcount" name="LEcount" placeholder="额外掉落数" maxlength="7" /></td>
+            </tr>
+        </table>
+        <br /><br /><br />
+        <p class="GIB btn" onclick="FunctionsRsult();">生成</p>
+        <p class="GIB btn" onclick="FunctionsRsult('clearNBT');">清空</p>
+        <p class="GIB btn" onclick='document.getElementById("gFunctions").style.width = "0px";'>取消</p>
+        <br /><br /><br />
+        <div id="topbar">
+            <div id="topicon">
+
+            </div>
+            <div>
+                <span id="toptitle">Minecraft Loottable Maker</span>
+
+            </div>
+        </div>
+        <div id="loading">
+            <div class="center-title"><span style="color:rgb(33, 36, 35);font-size:36px;">正在玩命加载 Minecraft Loottable Maker 中...</span></div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="../js/gquery.js"></script>
+    <script type="text/javascript" src="loottable.js"></script>
+    <script>
+        window.onload = function() {
+            $("#loading").fadeOut();
+        }
+
+        function back() {
+            location = "..";
+        }
+
+        function next() {
+            location = "src/index.html";
+        }
+    </script>
+</body>
+
+</html>

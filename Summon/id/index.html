@@ -1,0 +1,291 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minecraft IDs - Gamom's Website</title>
+    <link rel="stylesheet" type="text/css" href="../st_ga.css">
+    <script src="../js/gquery.js"></script>
+    <style>
+        #loading {
+            background-color: aquamarine;
+            /* color: azure; */
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        * {
+            transition: 0.5s;
+            overflow-y: none;
+            overflow-x: none;
+
+        }
+
+        .center-title {
+            /* color: white; */
+            font-family: "console";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+        }
+
+        #topicon {
+            position: absolute;
+            left: 16px;
+            top: 6px;
+            height: 48px;
+            width: 48px;
+            background-image: url("../../index/img/icon.png");
+            background-size: 100%;
+        }
+
+        #topbar {
+            padding-left: 2em;
+            background-color: rgb(220, 252, 241);
+            width: calc(100% - 2em);
+            height: 60px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        /* #centerlog {
+            width: 200px;
+            height: 200px;
+            background-image: url("img/icon.png");
+            background-size: 100%;
+            text-align: center;
+        } */
+
+        #index {
+            padding: 2em 2em 2em 2em;
+            background-image: linear-gradient(135deg, rgb(220, 252, 241), aquamarine);
+            width: calc(100% - 4em);
+            height: calc(100% - 4em);
+            position: absolute;
+            left: 0;
+            top: 0;
+
+        }
+
+        #cltext {
+            color: #333;
+        }
+
+        #cltext:hover {
+            color: rgb(104, 104, 104);
+        }
+
+        #textarea {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            padding: 4em 4em 4em 4em;
+            width: calc(100% - 8em);
+            height: auto;
+        }
+
+        #textarea * {
+            user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .button-o {
+            color: #333;
+            font-weight: bold;
+            font-family: "console";
+            font-size: 26px;
+            outline: none;
+            border: none;
+            border-bottom: 4px solid #333;
+            width: 180px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            line-height: 60px;
+        }
+
+        .button-o:hover,
+        .button-o:active {
+            color: #b6b6b6;
+            border-bottom: 4px solid #b6b6b6;
+        }
+
+        .windows {
+            background: rgba(10, 10, 10, 0.8);
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 100%;
+        }
+
+        .new {
+            width: 140px;
+            height: 40px;
+            font-size: 16px;
+        }
+
+        .new:hover {
+            transform: scale(1.05, 1.05);
+        }
+
+        .del {
+            width: 120px;
+            height: 30px;
+            font-size: 16px;
+        }
+
+        .del:hover {
+            transform: scale(1.05, 1.05);
+        }
+
+        #toptitle {
+            font-size: 24px;
+            font-weight: normal;
+            line-height: 60px;
+            left: 80px;
+            display: inline-block;
+            position: absolute;
+        }
+
+        #texts {
+            width: calc(100% - 8em);
+            height: 400px;
+            display: inline-block;
+            overflow-y: auto;
+            padding: 4em 4em 4em 4em;
+        }
+
+        .input {
+            width: calc(100% - 8em);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .colorSet {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            position: relative;
+            top: 4px;
+            left: 16px;
+            border-radius: 2px;
+            border: 1px solid #333;
+        }
+
+        .colorSet:hover {
+            transform: scale(1.3, 1.3);
+        }
+
+        .text-top {
+            line-height: 40px;
+        }
+
+        .colors {
+            background-color: black;
+            color: invert(100%);
+        }
+    </style>
+</head>
+
+<body bgcolor="azure">
+    <div id="index">
+        <input id="searchVal" class="input" placeholder="输入文本进行搜索" onkeydown="psps(event,this)" />
+        <button class="button-red" onclick="search(document.getElementById('searchVal'));">
+            查询
+        </button>
+        <div id="result">
+            <br/>
+            <b>查询结果</b>
+            <p id="message">输入文本开始查找</p>
+            <img src="item/structure_void.png" alt="物品图片" />
+        </div>
+
+    </div>
+    <div id="textarea">
+        <h2>其他信息</h2>
+        <a href="./items.json">下载 JSON 文件</a>
+    </div>
+</body>
+<script>
+    var showmsg = document.getElementById("message");
+    var check = false;
+
+    var texts = document.getElementById("texts");
+    window.onload = function () {
+        Init();
+        $("#loading").fadeOut();
+    }
+    var Lists = [];
+    function Init() {
+        $.fetch("./items.json", "json").then(data => {
+            //console.log(data);
+
+            Lists = (data);
+        });
+    }
+    function search(val) {
+        var value=val.value;
+        if(value===''){
+            showmsg.innerHTML="请输入文本！";
+        }else{
+            showmsg.innerHTML="Searching...";
+            
+        }
+    }
+    function psps(e,ss) {
+        var evt = window.event || e;
+        if (evt.keyCode == 13) {
+            search(ss);
+        }
+    }
+    // function back() {
+    //     location = "..";
+    // }
+
+    // function next() {
+    //     location = "src/index.html";
+    // }
+
+    // function newTextMain() {
+    //     var ele = "<div></div>";
+    //     appendChild(ele);
+    // }
+
+    // function colorful(e, a, b, c) {
+    //     //console.log(e.offsetParent.getElementsByClassName("enter")[0]);
+    //     e.offsetParent.getElementsByClassName("colors")[0].value = b;
+    //     if (check) {
+    //         e.offsetParent.getElementsByClassName("enter")[0].style.color = a;
+    //     } else {
+    //         e.offsetParent.getElementsByClassName("colors")[0].style.backgroundColor = a;
+    //         e.offsetParent.getElementsByClassName("colors")[0].style.color = ColorReverse(a);
+    //     }
+
+    // }
+
+    // function ColorReverse(OC) {
+    //     if (OC === "black" || OC === "darkblue" || OC === "blue")
+    //         return "white";
+    //     if (OC === "gray")
+    //         return "green";
+    //     return "black";
+    // }
+</script>
+
+</html>

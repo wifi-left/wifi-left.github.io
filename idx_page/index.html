@@ -1,0 +1,142 @@
+<html>
+
+<head>
+    <title>
+        导航页
+    </title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        * {
+            transition: 100ms;
+        }
+        
+        #background {
+            background-image: url("./img/bg.png");
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: 2em;
+            padding-bottom: 2em;
+        }
+        
+        #search-box {
+            width: 95%;
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translateY(0%) translateX(-50%);
+            height: calc(100% - 2em);
+            border-radius: 16px;
+            max-width: 1200px;
+            min-width: 200px;
+            background-color: rgba(233, 233, 233, 0.3);
+            padding-top: 2em;
+        }
+        
+        #search-box input {
+            height: 48px;
+            width: calc(90%);
+            max-width: 700px;
+            font-size: 18px;
+            outline: none;
+            border-radius: 8px;
+            text-indent: 16px;
+            border: none;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.65);
+            transition: 0.5s;
+        }
+        
+        #search-box input:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            transform: scale(1.01);
+        }
+        
+        #search-box input:focus {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            transform: scale(1.02);
+        }
+        
+        #result {
+            list-style: none;
+            padding: 1em 1em 1em 1em;
+            text-indent: 0;
+            background-color: aliceblue;
+            border-radius: 16px;
+            max-width: 680px;
+            display: inline-block;
+            width: calc(85%);
+            overflow-y: auto;
+        }
+        
+        .advice {
+            padding: 1em 1em 1em 1em;
+            color: #333;
+            background-color: rgba(240, 248, 255, 0.6);
+            text-align: left;
+            font-size: 18px;
+            height: 24px;
+            transition: 500ms;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .advice:hover {
+            background-color: rgba(199, 199, 199, 0.6);
+        }
+        
+        .advice:active {
+            background-color: rgb(165, 165, 165, 0.6);
+        }
+        
+        img {
+            display: inline-block;
+            vertical-align: middle;
+            width: 24px;
+            height: 24px;
+            padding-right: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="background">
+        <div id="search-box">
+            <input id="ipts" type="input" oninput="flist(this);" style="text-align:left" placeholder="键入文本开始搜索" /><br/><br/>
+            <ul id="result">
+                <li class="advice" onclick="window.open('http://bing.com')">
+                    <img src="./img/bing.ico" /> Bing 搜索</li>
+                <li class="advice" onclick="window.open('http://google.com')">
+                    <img src="./img/google.ico" /> Google 搜索</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+<script>
+    var ipts = document.getElementById("ipts");
+    var rst = document.getElementById("result");
+
+    function flist(ipt) {
+        var text = ipt.value;
+        var ctp = "";
+        if (text !== "") {
+            if (text.substr(0, 7) === "http://" || text.substr(0, 8) === "https://") {
+
+                ctp = '<li class="advice" onclick="window.open(\'' + text + '\')"><img src="' + text.split("/")[0] + '//' + text.split("/")[2] + '/favicon.ico" onerror="this.src=\'./img/url.svg\'" /> 打开 ' + text + '</li>'
+            }
+            ctp = ctp + '<li class="advice" onclick="window.open(\'http://bing.com/search?q=' + text + '\')"><img src="./img/bing.ico" /> Bing 搜索 "' + text + '"</li><li class="advice" onclick="window.open(\'http://google.com/search?q=' + text + '\')"><img src="./img/google.ico" /> Google 搜索 "' + text + '"</li>';
+
+        } else {
+            ctp = '<li class="advice" onclick="window.open(\'http://bing.com\')"><img src="./img/bing.ico" /> Bing 搜索</li><li class="advice" onclick="window.open(\'http://google.com\')"><img src="./img/google.ico" /> Google 搜索</li>'
+        }
+        rst.innerHTML = ctp;
+    }
+</script>
+
+</html>

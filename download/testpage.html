@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="Content-Type: text/html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Gamom's Website</title>
+    <script src="../index/js/gquery.js"></script>
+    <style>
+        #loading {
+            background-color: aquamarine;
+            /* color: azure; */
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        * {
+            transition: 0.5s;
+            overflow-y: none;
+            overflow-x: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .center-title {
+            /* color: white; */
+            font-family: "console";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+        }
+
+        #topicon {
+            position: absolute;
+            left: 16px;
+            top: 6px;
+            height: 48px;
+            width: 48px;
+            background-image: url("img/icon.png");
+            background-size: 100%;
+        }
+
+        #topbar {
+            padding-left: 2em;
+            background-color: rgb(220, 252, 241);
+            width: calc(100% - 2em);
+            height: 60px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        /* #centerlog {
+            width: 200px;
+            height: 200px;
+            background-image: url("img/icon.png");
+            background-size: 100%;
+            text-align: center;
+        } */
+
+        #index {
+            padding: 2em 2em 2em 2em;
+            background-image: linear-gradient(135deg, rgb(220, 252, 241), aquamarine);
+            width: calc(100% - 4em);
+            height: calc(100% - 4em);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        #cltext {
+            color: #333;
+        }
+
+        #cltext:hover {
+            color: rgb(104, 104, 104);
+        }
+
+        #textarea {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            padding: 4em 4em 4em 4em;
+            width: calc(100% - 8em);
+            height: auto;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .button-o {
+            color: #333;
+            font-weight: bold;
+            font-family: "console";
+            font-size: 26px;
+            outline: none;
+            border: none;
+            border-bottom: 4px solid #333;
+            width: 180px;
+            height: 60px;
+            background: rgba(0, 0, 0, 0);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            line-height: 60px;
+        }
+
+        .button-o:hover,
+        .button-o:active {
+            color: #b6b6b6;
+            border-bottom: 4px solid #b6b6b6;
+        }
+
+        .windows {
+            background: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 100%;
+        }
+
+        #background {
+            background-image: url("background.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            background-position: center 0;
+            z-index: -100;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #left-head {
+            background-color: rgba(184, 184, 184, 0.8);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 100%;
+        }
+
+        .title {
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .subtitle {
+            display:inline-block;
+            font-size: 12px;
+            border-bottom: 1px solid rgb(104, 104, 104);
+            width: calc(100% - 24px);
+        }
+
+        .left-content {
+
+            padding-left: 16px;
+            padding-top: 30px;
+        }
+
+        .button-head {
+            color: black;
+            left: -16px;
+            position: relative;
+            line-height: 50px;
+            text-indent: 16px;
+            width: calc(100% + 16px);
+            height: 50px;
+        }
+
+        .waves-ripple {
+            position: absolute;
+            opacity: 1;
+            transform: scale(0);
+            transform-origin: center;
+            display: block;
+            border-radius: 100%;
+        }
+
+        .waves-ripple.click-active {
+            opacity: 0;
+            transform: scale(2);
+            transition: opacity 1.2s ease-out, transform 0.6s ease-out;
+        }
+        .subcontent{
+            padding-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body bgcolor="azure">
+    <div id="background"></div>
+    <div id="left-head">
+        <div class="title-div">
+            <h1 class="title"> HMCL Website (Test)</h1>
+        </div>
+        <div class="left-content">
+            <div class="subcontent">
+                <span class="subtitle">导航</span>
+            </div>
+            <div class="button-head">
+                Test
+            </div>
+        </div>
+
+    </div>
+    <div id="loading">
+        <div class="center-title"><span style="color:rgb(33, 36, 35);font-size:36px;">正在玩命加载中...</span></div>
+    </div>
+</body>
+<script>
+    //var act ;
+    window.onload = function () {
+        $("#loading").fadeOut();
+        
+
+
+    }
+    var eles = document.getElementsByClassName("button-head");
+    for (var i = 0; i < eles.length; i++) {
+        eles[i].onmouseup = function () {
+            var elk = this.getElementsByClassName("click-active");
+            for (var i = 0; i < elk.length; i++) {
+                this.removeChild(elk[i]);
+                // console.log(elk);
+            }
+        }
+        eles[i].onmousedown = function (e) {
+            var elk = this.getElementsByClassName("click-active");
+            for (var i = 0; i < elk.length; i++) {
+                this.removeChild(elk[i]);
+                // console.log(elk);
+            }
+            let el = this;
+            if (!el.style.position) {
+                el.style.position = 'relative';
+            }
+            el.style.overflow = 'hidden';
+            let wavesDom = el.querySelector('.waves-ripple');
+            let rect = el.getBoundingClientRect();
+            if (wavesDom) {
+                wavesDom.className = 'waves-ripple'
+            } else {
+                wavesDom = document.createElement('div');
+                wavesDom.className = 'waves-ripple';
+                el.appendChild(wavesDom);
+            }
+            let m = Math.max(el.offsetHeight, el.offsetWidth);
+            wavesDom.style.width = wavesDom.style.height = m + 'px';
+            wavesDom.style.backgroundColor = 'rgba(0,0,0,0.15)';
+            wavesDom.className = 'waves-ripple click-active'
+            wavesDom.style.top = (e.pageY - rect.top - m / 2) + 'px';
+            wavesDom.style.left = (e.pageX - rect.left - m / 2) + 'px';
+
+        };
+    }
+</script>
+
+</html>
